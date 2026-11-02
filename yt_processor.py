@@ -7,6 +7,7 @@ Directory: C:\Cursor\85_whatsapp_youtube_status
 
 import sys
 import os
+import re
 import json
 import math
 import subprocess
@@ -69,9 +70,83 @@ def probe_duration(ffmpeg_exe, file_path):
     return 0.0
 
 
+def probe_video_dimensions(ffmpeg_exe, file_path):
+    """Parse video width and height from ffmpeg -i stderr output."""
+    try:
+        proc = subprocess.run(
+            [ffmpeg_exe, "-i", file_path],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding="utf-8",
+            errors="replace"
+        )
+        output = proc.stderr or ""
+        m = re.search(r'Stream.*Video:.*?(\d{3,4})x(\d{3,4})', output)
+        if m:
+            return int(m.group(1)), int(m.group(2))
+    except Exception:
+        pass
+    return 0, 0
+
+
+def extract_instagram_shortcode(url):
+    """Extract Instagram shortcode from reel / p / tv URL."""
+    m = re.search(r'instagram\.com/(?:[A-Za-z0-9_.]+/)?(?:reel|reels|p|tv|share/reel)/([A-Za-z0-9_-]+)', url, re.I)
+    return m.group(1) if m else None
+
+
+def download_instagram_fallback(url, output_file):
+    """Download Instagram video via instaloader when yt-dlp hits rate limits / login redirect."""
+    import urllib.request
+    try:
+        import instaloader
+    except ImportError:
+        raise RuntimeError("Instagram indirme motoru (instaloader) yüklü değil.")
+
+    shortcode = extract_instagram_shortcode(url)
+    if not shortcode:
+        raise ValueError(f"Instagram shortcode bulunamadı: {url}")
+
+    L = instaloader.Instaloader(
+        download_pictures=False,
+        download_video_thumbnails=False,
+        download_geotags=False,
+        download_comments=False,
+        save_metadata=False,
+        compress_json=False
+    )
+    post = instaloader.Post.from_shortcode(L.context, shortcode)
+    if not post.is_video or not post.video_url:
+        raise ValueError("Bu Instagram gönderisi video içermiyor.")
+
+    req = urllib.request.Request(
+        post.video_url,
+        headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+    )
+    with urllib.request.urlopen(req, timeout=40) as resp, open(output_file, "wb") as f:
+        while True:
+            chunk = resp.read(64 * 1024)
+            if not chunk:
+                break
+            f.write(chunk)
+
+    raw_caption = (post.caption or "").strip()
+    title = raw_caption.splitlines()[0][:100] if raw_caption else f"Instagram Reel ({shortcode})"
+    return {
+        "videoId": shortcode,
+        "title": title,
+        "uploader": post.owner_username or "Instagram",
+        "thumbnail": post.url,
+        "webpageUrl": f"https://www.instagram.com/reel/{shortcode}/",
+        "platform": "INSTAGRAM",
+        "isShort": True
+    }
+
+
 def process_youtube_video(url, output_dir, segment_seconds=59):
     """
-    Download a YouTube / Shorts video and split into WhatsApp Status compatible
+    Download a YouTube / Shorts or Instagram video and split into WhatsApp Status compatible
     MP4 segments (max 60s each, H.264 + AAC, yuv420p, faststart).
     """
     import yt_dlp
@@ -82,6 +157,7 @@ def process_youtube_video(url, output_dir, segment_seconds=59):
     merged_mp4 = os.path.join(output_dir, "source_video.mp4")
 
     url = url.strip().rstrip(".,;!?'\"")
+    is_ig_url = "instagram.com" in url.lower()
 
     ydl_opts = {
         "format": "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best",
@@ -95,8 +171,28 @@ def process_youtube_video(url, output_dir, segment_seconds=59):
         "progress_hooks": [],
     }
 
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url, download=True)
+    # Support optional cookies.txt in project directory
+    cookie_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cookies.txt")
+    if os.path.exists(cookie_file):
+        ydl_opts["cookiefile"] = cookie_file
+
+    info = None
+    ytdl_error = None
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=True)
+    except Exception as exc:
+        ytdl_error = exc
+        if not is_ig_url:
+            raise
+
+    # Instagram rate-limit / login redirect fallback
+    fallback_info = None
+    if is_ig_url and (ytdl_error is not None or not os.path.exists(merged_mp4)):
+        try:
+            fallback_info = download_instagram_fallback(url, merged_mp4)
+        except Exception as fb_exc:
+            raise RuntimeError(f"Instagram indirme hatası: {ytdl_error} | Fallback hatası: {fb_exc}")
 
     # Locate downloaded source file
     source_file = merged_mp4
@@ -107,31 +203,41 @@ def process_youtube_video(url, output_dir, segment_seconds=59):
                 break
 
     if not os.path.exists(source_file):
-        raise RuntimeError("İndirilen video dosyası bulunamadı.")
+        raise RuntimeError(f"İndirilen video dosyası bulunamadı. {ytdl_error or ''}")
 
-    extractor = (info.get("extractor") or "").lower()
-    is_instagram = "instagram" in extractor or "instagram.com" in url.lower()
-    platform = "INSTAGRAM" if is_instagram else "YOUTUBE"
-
-    video_id = info.get("id") or "unknown"
-    raw_title = (info.get("title") or "").strip()
-    raw_desc = (info.get("description") or "").strip()
-
-    # Instagram videolarında başlık genellikle jenerik ("Video by ...") gelir. Açıklamanın ilk satırı başlık olarak daha anlamlıdır.
-    if is_instagram and (not raw_title or raw_title.lower().startswith("video by") or len(raw_title) < 5) and raw_desc:
-        first_line = raw_desc.splitlines()[0].strip()
-        if len(first_line) > 110:
-            first_line = first_line[:107] + "..."
-        title = first_line if first_line else raw_title
+    if fallback_info:
+        video_id = fallback_info["videoId"]
+        title = fallback_info["title"]
+        uploader = fallback_info["uploader"]
+        webpage_url = fallback_info["webpageUrl"]
+        thumbnail = fallback_info["thumbnail"]
+        platform = "INSTAGRAM"
+        is_short = True
+        width, height = probe_video_dimensions(ffmpeg_exe, source_file)
     else:
-        title = raw_title or ("Instagram Video" if is_instagram else "YouTube Video")
+        extractor = (info.get("extractor") or "").lower()
+        is_instagram = "instagram" in extractor or is_ig_url
+        platform = "INSTAGRAM" if is_instagram else "YOUTUBE"
 
-    uploader = info.get("uploader") or info.get("channel") or ("Instagram Kullanıcısı" if is_instagram else "Bilinmeyen Kanal")
-    webpage_url = info.get("webpage_url") or url
-    thumbnail = info.get("thumbnail") or ""
-    width = info.get("width") or 0
-    height = info.get("height") or 0
-    is_short = "/shorts/" in url.lower() or "/reel" in url.lower() or is_instagram or (height and width and height > width)
+        video_id = info.get("id") or "unknown"
+        raw_title = (info.get("title") or "").strip()
+        raw_desc = (info.get("description") or "").strip()
+
+        # Instagram videolarında başlık genellikle jenerik ("Video by ...") gelir. Açıklamanın ilk satırı başlık olarak daha anlamlıdır.
+        if is_instagram and (not raw_title or raw_title.lower().startswith("video by") or len(raw_title) < 5) and raw_desc:
+            first_line = raw_desc.splitlines()[0].strip()
+            if len(first_line) > 110:
+                first_line = first_line[:107] + "..."
+            title = first_line if first_line else raw_title
+        else:
+            title = raw_title or ("Instagram Video" if is_instagram else "YouTube Video")
+
+        uploader = info.get("uploader") or info.get("channel") or ("Instagram Kullanıcısı" if is_instagram else "Bilinmeyen Kanal")
+        webpage_url = info.get("webpage_url") or url
+        thumbnail = info.get("thumbnail") or ""
+        width = info.get("width") or 0
+        height = info.get("height") or 0
+        is_short = "/shorts/" in url.lower() or "/reel" in url.lower() or is_instagram or (height and width and height > width)
 
     duration = float(info.get("duration") or 0)
     probed = probe_duration(ffmpeg_exe, source_file)
