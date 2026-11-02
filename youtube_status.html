@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube & Instagram (Reels) 60sn WhatsApp Status (Durum) Yayıncısı | Kurumsal Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #070b14;
+            --bg-card: #0f172a;
+            --bg-card-hover: #162038;
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --emerald: #10b981;
+            --emerald-glow: rgba(16, 185, 129, 0.25);
+            --rose: #f43f5e;
+            --rose-glow: rgba(244, 63, 94, 0.25);
+            --amber: #f59e0b;
+            --blue: #3b82f6;
+            --violet: #8b5cf6;
+            --yt-red: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: radial-gradient(circle at top right, #1e1b4b 0%, #070b14 45%, #050811 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 11, 20, 0.88);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #ef4444, #10b981);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35);
+        }
+
+        .brand-title h1 {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-title p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 15px;
+            border-radius: 10px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #fff;
+        }
+
+        .btn-youtube {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #fff;
+        }
+
+        .btn-danger {
+            background: rgba(244, 63, 94, 0.14);
+            border-color: rgba(244, 63, 94, 0.35);
+            color: #fda4af;
+        }
+
+        .btn-blue {
+            background: rgba(59, 130, 246, 0.16);
+            border-color: rgba(59, 130, 246, 0.4);
+            color: #93c5fd;
+        }
+
+        .container {
+            max-width: 1420px;
+            margin: 24px auto;
+            padding: 0 24px;
+        }
+
+        /* ÜST METRİK VE ŞALTER KARTLARI */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1.8fr;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 980px) {
+            .hero-grid { grid-template-columns: 1fr; }
+        }
+
+        .panel-card {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.78));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 22px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel-card.gate-on {
+            border-color: rgba(16, 185, 129, 0.45);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.08);
+        }
+
+        .panel-card.gate-off {
+            border-color: rgba(244, 63, 94, 0.45);
+            box-shadow: 0 10px 30px rgba(244, 63, 94, 0.08);
+        }
+
+        .gate-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .gate-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .gate-title h2 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-on { background: rgba(16, 185, 129, 0.16); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+        .badge-off { background: rgba(244, 63, 94, 0.16); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.35); }
+        .badge-wait { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+        .badge-pub { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 58px;
+            height: 30px;
+            flex-shrink: 0;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: rgba(244, 63, 94, 0.35);
+            border: 1px solid rgba(244, 63, 94, 0.6);
+            transition: .25s;
+            border-radius: 30px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 3px;
+            background-color: #fda4af;
+            transition: .25s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: rgba(16, 185, 129, 0.35);
+            border-color: rgba(16, 185, 129, 0.75);
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+            background-color: #34d399;
+        }
+
+        .info-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .info-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            padding: 6px 11px;
+            border-radius: 8px;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* URL SUBMIT FORM */
+        .submit-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .url-input {
+            flex: 1;
+            min-width: 260px;
+            background: rgba(7, 11, 20, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 10px;
+            padding: 11px 14px;
+            color: var(--text-main);
+            font-size: 13.5px;
+            outline: none;
+        }
+
+        .url-input:focus {
+            border-color: var(--emerald);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
+
+        /* WAITING APPROVAL HIGHLIGHT BOX */
+        .approval-banner {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.14), rgba(16, 185, 129, 0.10));
+            border: 2px solid rgba(245, 158, 11, 0.55);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 24px;
+            box-shadow: 0 12px 32px rgba(245, 158, 11, 0.12);
+        }
+
+        /* JOB CARDS */
+        .job-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 18px;
+            transition: all 0.2s ease;
+        }
+
+        .job-card:hover {
+            border-color: rgba(255, 255, 255, 0.16);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 8px;
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        .parts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .part-card {
+            background: rgba(7, 11, 20, 0.65);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .part-card video {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            background: #000;
+            border-radius: 8px;
+        }
+
+        .part-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12.5px;
+            font-weight: 700;
+        }
+
+        .part-sub {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: #0f172a;
+            border: 1px solid var(--emerald);
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toast.error { border-color: var(--rose); }
+    </style>
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-icon" style="background: linear-gradient(135deg, #ef4444 0%, #e1306c 50%, #10b981 100%);">
+                <i class="fa-brands fa-youtube"></i>
+            </div>
+            <div class="brand-title">
+                <h1>
+                    YouTube & Instagram Reels ➔ WhatsApp Status (60sn) Yayıncısı
+                    <span class="badge badge-on" id="waConnBadge"><i class="fa-brands fa-whatsapp"></i> Bağlantı Kontrol Ediliyor</span>
+                </h1>
+                <p>05054667617 WhatsApp hattından gelen YouTube / Shorts veya Instagram Reel / Video linklerini otomatik indirir, 60 saniyelik bölümlere ayırır ve onayınızla Durum'da (Status) sırayla yayınlar.</p>
+            </div>
+        </div>
+        <div class="top-actions">
+            <a href="portal.html" class="btn"><i class="fa-solid fa-table-cells-large" style="color:#60a5fa;"></i> Kurumsal Portal</a>
+            <a href="whatsapp_yonetim.html" class="btn"><i class="fa-solid fa-sliders" style="color:#34d399;"></i> WhatsApp ON/OFF Matrisi</a>
+            <button class="btn" onclick="loadDashboard()"><i class="fa-solid fa-rotate" id="refreshIcon"></i> Yenile</button>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- ÜST KONTROL VE MANUEL GÖNDERİM ALANI -->
+        <div class="hero-grid">
+            <!-- SOL: WHATSAPP ON/OFF ŞALTER KARTI -->
+            <div class="panel-card gate-on" id="gateCard">
+                <div class="gate-header">
+                    <div class="gate-title">
+                        <i class="fa-brands fa-whatsapp" style="font-size:26px; color:#10b981;"></i>
+                        <div>
+                            <h2>WhatsApp Otomatik Dinleme Şalteri</h2>
+                            <span style="font-size:11.5px; color:var(--text-muted);">Özellik Kodu: <code>in_youtube_status_publisher</code></span>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span class="badge badge-on" id="gateStatusBadge">AÇIK (ON)</span>
+                        <label class="switch">
+                            <input type="checkbox" id="gateToggleInput" checked onchange="toggleFeatureGate(this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <p style="font-size:12.5px; color:var(--text-muted); line-height:1.55;">
+                    Bu şalter <b>AÇIK (ON)</b> olduğunda, <b>05054667617</b> numaranızdan WhatsApp'a attığınız her YouTube, YouTube Shorts veya Instagram Reel / Video linki otomatik indirilir, 60 saniyelik parçalara bölünür ve size kaç parça olduğu bildirilerek yayın onayı istenir.
+                </p>
+                <div class="info-pills">
+                    <div class="info-pill"><i class="fa-solid fa-phone" style="color:#34d399;"></i> Yetkili Hat: <b>05054667617</b></div>
+                    <div class="info-pill"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i> YouTube & Shorts</div>
+                    <div class="info-pill"><i class="fa-brands fa-instagram" style="color:#e1306c;"></i> Instagram Reels</div>
+                    <div class="info-pill"><i class="fa-solid fa-scissors" style="color:#fbbf24;"></i> Bölüm: <b>60 Sn (Max Status)</b></div>
+                    <div class="info-pill"><i class="fa-solid fa-shield-check" style="color:#60a5fa;"></i> Yayın Modu: <b>Onaylı (EVET / HAYIR)</b></div>
+                </div>
+            </div>
+
+            <!-- SAĞ: WEB ÜZERİNDEN YOUTUBE / INSTAGRAM LİNKİ EKLEME -->
+            <div class="panel-card">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+                    <h2 style="font-size:16px; font-weight:700; display:flex; align-items:center; gap:8px;">
+                        <i class="fa-brands fa-youtube" style="color:#ef4444; font-size:20px;"></i>
+                        <i class="fa-brands fa-instagram" style="color:#e1306c; font-size:19px;"></i>
+                        YouTube veya Instagram Linki İndir & 60sn Böl
+                    </h2>
+                    <span class="badge badge-pub">C:\Cursor\85_whatsapp_youtube_status</span>
+                </div>
+                <p style="font-size:12.5px; color:var(--text-muted);">
+                    WhatsApp'tan gönderebileceğiniz gibi doğrudan buradan da YouTube veya Instagram Reel linki yapıştırıp 60 saniyelik durum parçalarını hazırlayabilirsiniz:
+                </p>
+                <div class="submit-form">
+                    <input type="text" id="ytUrlInput" class="url-input" placeholder="https://www.instagram.com/reel/... veya https://youtube.com/shorts/...">
+                    <button class="btn btn-youtube" id="submitBtn" onclick="submitYoutubeUrl()" style="background: linear-gradient(135deg, #ef4444 0%, #e1306c 100%);">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> İndir & 60sn Parçalara Böl
+                    </button>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-top:12px; flex-wrap:wrap; gap:10px;">
+                    <label style="font-size:12px; color:var(--text-muted); display:flex; align-items:center; gap:7px; cursor:pointer;">
+                        <input type="checkbox" id="notifyWaCheckbox" checked>
+                        Hazır olduğunda 05054667617 WhatsApp hattıma parça bilgisi ve onay mesajı gönder
+                    </label>
+                    <span id="processingStatusText" style="font-size:12px; color:#fbbf24; font-weight:600; display:none;">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Video indiriliyor ve 60sn bölümlere ayrılıyor, lütfen bekleyin...
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ONAY BEKLEYEN AKTİF VİDEO ALANI -->
+        <div id="waitingApprovalContainer"></div>
+
+        <!-- TÜM İŞLEMLER VE BÖLÜMLENMİŞ VİDEOLAR LİSTESİ -->
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+            <h3 style="font-size:16px; font-weight:700; display:flex; align-items:center; gap:9px;">
+                <i class="fa-solid fa-film" style="color:#60a5fa;"></i>
+                İndirilen ve 60sn Bölümlere Ayrılan YouTube Videoları (<span id="jobsCountSpan">0</span>)
+            </h3>
+        </div>
+
+        <div id="jobsListContainer">
+            <div class="panel-card" style="text-align:center; color:var(--text-muted); padding:36px;">
+                Yükleniyor...
+            </div>
+        </div>
+
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        const WA_API_BASE = (window.location.port === '5055') ? '' : 'http://localhost:5055';
+
+        function showToast(msg, isError = false) {
+            const c = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = 'toast' + (isError ? ' error' : '');
+            t.innerHTML = `<i class="fa-solid ${isError ? 'fa-circle-exclamation' : 'fa-circle-check'}"></i> <span>${msg}</span>`;
+            c.appendChild(t);
+            setTimeout(() => t.remove(), 4000);
+        }
+
+        function escapeHtml(s) {
+            return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function statusBadgeHtml(status) {
+            switch (status) {
+                case 'WAITING_APPROVAL':
+                    return `<span class="badge badge-wait"><i class="fa-solid fa-clock"></i> ONAY BEKLİYOR (EVET / HAYIR)</span>`;
+                case 'PUBLISHING':
+                    return `<span class="badge badge-pub"><i class="fa-solid fa-spinner fa-spin"></i> WHATSAPP DURUM'DA YAYINLANIYOR...</span>`;
+                case 'PUBLISHED':
+                    return `<span class="badge badge-on"><i class="fa-solid fa-check-double"></i> WHATSAPP DURUM'DA YAYINLANDI</span>`;
+                case 'DOWNLOADING':
+                    return `<span class="badge badge-pub"><i class="fa-solid fa-spinner fa-spin"></i> İNDİRİLİYOR VE 60SN BÖLÜNÜYOR...</span>`;
+                case 'CANCELLED':
+                    return `<span class="badge badge-off"><i class="fa-solid fa-ban"></i> İPTAL EDİLDİ</span>`;
+                case 'FAILED':
+                    return `<span class="badge badge-off"><i class="fa-solid fa-triangle-exclamation"></i> HATA OLUŞTU</span>`;
+                default:
+                    return `<span class="badge">${escapeHtml(status)}</span>`;
+            }
+        }
+
+        async function loadDashboard() {
+            const icon = document.getElementById('refreshIcon');
+            if (icon) icon.classList.add('fa-spin');
+
+            try {
+                // 1. WhatsApp Health
+                try {
+                    const hRes = await fetch(`${WA_API_BASE}/health`, { signal: AbortSignal.timeout(2500) });
+                    const hData = await hRes.json();
+                    const badge = document.getElementById('waConnBadge');
+                    if (hData && (hData.whatsappReady || hData.status === 'ready')) {
+                        badge.className = 'badge badge-on';
+                        badge.innerHTML = `<i class="fa-brands fa-whatsapp"></i> WhatsApp Aktif (05054667617)`;
+                    } else {
+                        badge.className = 'badge badge-wait';
+                        badge.innerHTML = `<i class="fa-brands fa-whatsapp"></i> WhatsApp Hazırlanıyor`;
+                    }
+                } catch (_) {
+                    const badge = document.getElementById('waConnBadge');
+                    badge.className = 'badge badge-off';
+                    badge.innerHTML = `<i class="fa-solid fa-plug-circle-xmark"></i> Port 5055 Kapalı`;
+                }
+
+                // 2. Jobs & Feature Gate
+                const res = await fetch(`${WA_API_BASE}/api/yt-status/jobs`, { signal: AbortSignal.timeout(4000) });
+                const data = await res.json();
+                if (data && data.success) {
+                    updateGateUI(data.featureEnabled !== false);
+                    renderWaitingJob(data.activeWaitingJob);
+                    renderJobsList(data.jobs || []);
+                }
+            } catch (err) {
+                document.getElementById('jobsListContainer').innerHTML = `
+                    <div class="panel-card" style="text-align:center; color:#fda4af; padding:28px;">
+                        <i class="fa-solid fa-triangle-exclamation" style="font-size:24px; margin-bottom:8px;"></i>
+                        <p>WhatsApp Servisi (Port 5055) ile iletişim kurulamadı: ${escapeHtml(err.message)}</p>
+                    </div>`;
+            } finally {
+                if (icon) icon.classList.remove('fa-spin');
+            }
+        }
+
+        function updateGateUI(enabled) {
+            const card = document.getElementById('gateCard');
+            const badge = document.getElementById('gateStatusBadge');
+            const input = document.getElementById('gateToggleInput');
+            input.checked = enabled;
+            if (enabled) {
+                card.className = 'panel-card gate-on';
+                badge.className = 'badge badge-on';
+                badge.innerText = 'AÇIK (ON)';
+            } else {
+                card.className = 'panel-card gate-off';
+                badge.className = 'badge badge-off';
+                badge.innerText = 'KAPALI (OFF)';
+            }
+        }
+
+        async function toggleFeatureGate(enabled) {
+            try {
+                const res = await fetch(`${WA_API_BASE}/api/yt-status/toggle`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ enabled })
+                });
+                const data = await res.json();
+                if (data && data.success) {
+                    updateGateUI(data.enabled);
+                    showToast(`YouTube Durum Yayıncısı ${data.enabled ? 'AÇILDI (ON)' : 'KAPATILDI (OFF)'}`);
+                }
+            } catch (err) {
+                showToast('Şalter değiştirilemedi: ' + err.message, true);
+            }
+        }
+
+        async function submitYoutubeUrl() {
+            const input = document.getElementById('ytUrlInput');
+            const url = (input.value || '').trim();
+            if (!url) {
+                showToast('Lütfen bir YouTube veya YouTube Shorts linki girin.', true);
+                return;
+            }
+            const notifyWhatsapp = document.getElementById('notifyWaCheckbox').checked;
+            const btn = document.getElementById('submitBtn');
+            const statusTxt = document.getElementById('processingStatusText');
+
+            btn.disabled = true;
+            statusTxt.style.display = 'inline-flex';
+
+            try {
+                const res = await fetch(`${WA_API_BASE}/api/yt-status/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url, notifyWhatsapp, segmentSeconds: 59 })
+                });
+                const data = await res.json();
+                if (data && data.success) {
+                    input.value = '';
+                    showToast(`Video indirildi ve ${data.job.totalParts} parçaya bölündü! Onayınız bekleniyor.`);
+                    await loadDashboard();
+                } else {
+                    showToast(data.error || 'İşlem başarısız oldu.', true);
+                }
+            } catch (err) {
+                showToast('Video işleme hatası: ' + err.message, true);
+            } finally {
+                btn.disabled = false;
+                statusTxt.style.display = 'none';
+            }
+        }
+
+        async function approveJob(jobId, mode = 'STATUS') {
+            try {
+                showToast(mode === 'SELF_CHAT_ONLY' ? 'Bölümler sohbetinize gönderiliyor...' : 'WhatsApp Durum (Status) yayını başlatıldı...');
+                const res = await fetch(`${WA_API_BASE}/api/yt-status/approve/${encodeURIComponent(jobId)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mode, alsoSendToSelfChat: true })
+                });
+                const data = await res.json();
+                if (data && data.success) {
+                    showToast(mode === 'SELF_CHAT_ONLY'
+                        ? `${data.chatSuccessCount} bölüm sohbetinize gönderildi!`
+                        : `WhatsApp Durum yayını tamamlandı (${data.statusSuccessCount} bölüm)!`);
+                    await loadDashboard();
+                } else {
+                    showToast(data.error || 'Yayınlama hatası', true);
+                }
+            } catch (err) {
+                showToast('Yayınlama hatası: ' + err.message, true);
+            }
+        }
+
+        async function cancelJob(jobId) {
+            try {
+                const res = await fetch(`${WA_API_BASE}/api/yt-status/cancel/${encodeURIComponent(jobId)}`, {
+                    method: 'POST'
+                });
+                const data = await res.json();
+                if (data && data.success) {
+                    showToast('Yayın iptal edildi.');
+                    await loadDashboard();
+                }
+            } catch (err) {
+                showToast('İptal hatası: ' + err.message, true);
+            }
+        }
+
+        async function deleteJob(jobId) {
+            if (!confirm('Bu video kaydını ve bölünen MP4 dosyalarını silmek istediğinize emin misiniz?')) return;
+            try {
+                const res = await fetch(`${WA_API_BASE}/api/yt-status/jobs/${encodeURIComponent(jobId)}`, {
+                    method: 'DELETE'
+                });
+                const data = await res.json();
+                if (data && data.success) {
+                    showToast('Kayıt ve dosyalar silindi.');
+                    await loadDashboard();
+                }
+            } catch (err) {
+                showToast('Silme hatası: ' + err.message, true);
+            }
+        }
+
+        function renderPartsHtml(job) {
+            if (!job.parts || job.parts.length === 0) return '';
+            return `
+                <div class="parts-grid">
+                    ${job.parts.map(p => `
+                        <div class="part-card">
+                            <div class="part-title">
+                                <span><i class="fa-solid fa-clapperboard" style="color:#34d399;"></i> ${p.partNumber} / ${job.totalParts}. Bölüm</span>
+                                <span class="badge ${p.published ? 'badge-on' : 'badge-pub'}">${p.published ? 'Yayınlandı' : p.durationSec + ' sn'}</span>
+                            </div>
+                            <video controls preload="metadata" src="${WA_API_BASE}${p.previewUrl}"></video>
+                            <div class="part-sub">
+                                <span>⏱️ Aralık: <b>${escapeHtml(p.startFormatted)} - ${escapeHtml(p.endFormatted)}</b></span>
+                                <span>📦 Boyut: <b>${p.sizeMb} MB</b></span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderWaitingJob(job) {
+            const container = document.getElementById('waitingApprovalContainer');
+            if (!job) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="approval-banner">
+                    <div class="job-header" style="border-bottom-color: rgba(245, 158, 11, 0.3);">
+                        <div>
+                            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                                <span class="badge badge-wait"><i class="fa-solid fa-bell"></i> YAYIN ONAYI BEKLİYOR</span>
+                                <h2 style="font-size:18px; font-weight:800;">${escapeHtml(job.title)}</h2>
+                            </div>
+                            <div class="job-meta">
+                                <span><i class="fa-solid fa-tv"></i> Kanal: <b>${escapeHtml(job.uploader)}</b></span>
+                                <span><i class="fa-solid fa-clock"></i> Toplam Süre: <b>${escapeHtml(job.totalDurationFormatted)} (${job.totalDurationSec} sn)</b></span>
+                                <span><i class="fa-solid fa-layer-group"></i> Bölüm Sayısı: <b>${job.totalParts} Parça (Max 60sn)</b></span>
+                                <span><i class="fa-solid fa-hard-drive"></i> Toplam Boyut: <b>${job.totalPartsSizeMb} MB</b></span>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <button class="btn btn-primary" onclick="approveJob('${job.jobId}', 'STATUS')">
+                                <i class="fa-solid fa-circle-check"></i> Onayla ve WhatsApp Durumda Sırayla Yayınla (${job.totalParts} Parça)
+                            </button>
+                            <button class="btn btn-blue" onclick="approveJob('${job.jobId}', 'SELF_CHAT_ONLY')">
+                                <i class="fa-solid fa-paper-plane"></i> Önce Sohbetime Önizleme Gönder
+                            </button>
+                            <button class="btn btn-danger" onclick="cancelJob('${job.jobId}')">
+                                <i class="fa-solid fa-xmark"></i> İptal Et
+                            </button>
+                        </div>
+                    </div>
+                    <p style="font-size:12.5px; color:#fde68a; margin-bottom:10px;">
+                        💡 <b>WhatsApp'tan Onay:</b> Telefonunuzdan (05054667617) <b>EVET</b> veya <b>ONAY</b> yazarak da bu ${job.totalParts} bölümü sırayla WhatsApp Durum'da yayına alabilirsiniz.
+                    </p>
+                    ${renderPartsHtml(job)}
+                </div>
+            `;
+        }
+
+        function renderJobsList(jobs) {
+            document.getElementById('jobsCountSpan').innerText = jobs.length;
+            const container = document.getElementById('jobsListContainer');
+
+            if (!jobs || jobs.length === 0) {
+                container.innerHTML = `
+                    <div class="panel-card" style="text-align:center; color:var(--text-muted); padding:40px;">
+                        <i class="fa-brands fa-youtube" style="font-size:36px; color:#ef4444; margin-bottom:10px;"></i>
+                        <h4 style="color:var(--text-main); margin-bottom:6px;">Henüz İşlenmiş YouTube / Shorts Videosu Yok</h4>
+                        <p style="font-size:13px;">05054667617 WhatsApp hattınızdan bir YouTube Shorts veya video linki gönderin ya da yukarıdaki kutuya yapıştırın.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = jobs.map(job => {
+                const isIg = job.platform === 'INSTAGRAM' || (job.url && job.url.includes('instagram.com'));
+                const platBadge = isIg
+                    ? `<span class="badge" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); color:#fff;"><i class="fa-brands fa-instagram"></i> Instagram</span>`
+                    : `<span class="badge" style="background:#dc2626; color:#fff;"><i class="fa-brands fa-youtube"></i> YouTube</span>`;
+                const openText = isIg ? "Instagram'da Aç" : "YouTube'da Aç";
+
+                return `
+                <div class="job-card">
+                    <div class="job-header">
+                        <div>
+                            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                                ${statusBadgeHtml(job.status)}
+                                ${platBadge}
+                                <strong style="font-size:15.5px;">${escapeHtml(job.title)}</strong>
+                                <a href="${escapeHtml(job.url)}" target="_blank" style="color:#60a5fa; font-size:12px; text-decoration:none;">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> ${openText}
+                                </a>
+                            </div>
+                            <div class="job-meta">
+                                <span><i class="fa-solid fa-user"></i> ${escapeHtml(job.uploader || '-')}</span>
+                                <span><i class="fa-solid fa-stopwatch"></i> Süre: <b>${escapeHtml(job.totalDurationFormatted || '00:00')}</b></span>
+                                <span><i class="fa-solid fa-scissors"></i> <b>${job.totalParts || 0} Bölüm</b> (60sn Status)</span>
+                                <span><i class="fa-solid fa-database"></i> ${job.totalPartsSizeMb || 0} MB</span>
+                                <span><i class="fa-solid fa-calendar"></i> ${job.createdAt ? new Date(job.createdAt).toLocaleString('tr-TR') : '-'}</span>
+                            </div>
+                            ${job.error ? `<div style="margin-top:8px; color:#fda4af; font-size:12px;"><i class="fa-solid fa-circle-exclamation"></i> Hata: ${escapeHtml(job.error)}</div>` : ''}
+                        </div>
+                        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                            ${job.parts && job.parts.length > 0 ? `
+                                <button class="btn btn-primary" onclick="approveJob('${job.jobId}', 'STATUS')">
+                                    <i class="fa-brands fa-whatsapp"></i> ${job.status === 'PUBLISHED' ? 'Tekrar Durumda Yayınla' : 'Onayla & Durumda Yayınla'}
+                                </button>
+                                <button class="btn btn-blue" onclick="approveJob('${job.jobId}', 'SELF_CHAT_ONLY')">
+                                    <i class="fa-solid fa-mobile-screen"></i> Sohbetime Gönder
+                                </button>
+                            ` : ''}
+                            <button class="btn btn-danger" onclick="deleteJob('${job.jobId}')" title="Sil">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    ${renderPartsHtml(job)}
+                </div>
+            `).join('');
+        }
+
+        loadDashboard();
+        setInterval(loadDashboard, 10000);
+    </script>
+</body>
+</html>
